@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Ordering - Efficiencee</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --money-green: #2ecc71;
+            --money-green-dark: #27ae60;
+        }
+        body {
+            background-color: white;
+            color: #333;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .btn-primary {
+            background-color: var(--money-green);
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: var(--money-green-dark);
+        }
+        .phone-frame {
+            max-width: 320px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto;
+            border: 8px solid #111;
+        }
+        .phone-header {
+            height: 50px;
+            background-color: #111;
+            position: relative;
+        }
+        .phone-header:before {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 25px;
+            background-color: #111;
+            left: 25%;
+            top: 0;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+        }
+        .phone-screen {
+            background-color: #f5f5f5;
+            min-height: 580px;
+            overflow: hidden;
+            position: relative;
+        }
+        .phone-footer {
+            height: 50px;
+            background-color: #111;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="bg-white shadow-sm py-4">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                Efficiencee
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="demo-dashboard.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Interactive Demo</a>
+                <a href="mobile-ordering.html" class="text-[#2ecc71] font-medium">Mobile Ordering</a>
+            </div>
+            <div>
+                <button class="btn-primary px-5 py-2 rounded-md font-medium">Contact Sales</button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-gray-900 text-white py-16">
+        <div class="max-w-6xl mx-auto px-4">
+            <h1 class="text-4xl font-bold mb-4">Mobile Ordering Experience</h1>
+            <p class="text-xl text-gray-300 max-w-3xl">Elevate your fan experience with seamless mobile ordering. Increase sales and reduce lines with our intuitive system.</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Interactive Demo Section -->
+        <section class="py-16 px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold mb-12 text-center">
+                    Experience the Fan <span class="text-[#2ecc71]">Ordering Process</span>
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="phone-frame">
+                            <div class="phone-header"></div>
+                            <div class="phone-screen" id="phone-screen">
+                                <!-- Initial screen content - will be replaced via JavaScript -->
+                                <div class="p-4 bg-[#2ecc71] text-white">
+                                    <div class="text-center py-2">
+                                        <h3 class="text-xl font-bold">Efficiencee Ordering</h3>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="text-center py-8">
+                                        <div class="w-20 h-20 rounded-full bg-[#2ecc71] flex items-center justify-center mx-auto mb-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                            </svg>
+                                        </div>
+                                        <h3 class="text-lg font-semibold mb-2">Welcome to Mobile Ordering</h3>
+                                        <p class="text-gray-600 mb-6">Order food, drinks, and merchandise without leaving your seat.</p>
+                                        <button class="btn-primary px-6 py-3 rounded-md font-semibold" id="start-demo">Start Demo</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="phone-footer"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6">Why Fans Love Mobile Ordering</h3>
+                        <ul class="space-y-6">
+                            <li class="flex">
+                                <div class="mr-4 text-[#2ecc71]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">No More Waiting in Lines</h4>
+                                    <p class="text-gray-600">Fans spend more time enjoying the event and less time waiting for food and drinks.</p>
+                                </div>
+                            </li>
+                            <li class="flex">
+                                <div class="mr-4 text-[#2ecc71]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Higher Average Order Values</h4>
+                                    <p class="text-gray-600">Mobile ordering typically increases order size by 40% compared to traditional concessions.</p>
+                                </div>
+                            </li>
+                            <li class="flex">
+                                <div class="mr-4 text-[#2ecc71]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905v.714L7.5 9h-.375c-.5 0-.905.405-.905.905v.714L3.5 14h-.375c-.5 0-.905.405-.905.905v.714L0.5 18" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Personalized Experience</h4>
+                                    <p class="text-gray-600">Recommendations based on preferences and previous purchases increase satisfaction.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits for Venues Section -->
+        <section class="py-16 px-4 bg-gray-50">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold mb-2 text-center">
+                    Benefits for <span class="text-[#2ecc71]">Venue Operators</span>
+                </h2>
+                <p class="text-center text-gray-600 mb-12">Drive more revenue while creating better fan experiences</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="text-[#2ecc71] text-4xl mb-4">+35%</div>
+                        <h3 class="text-xl font-semibold mb-3">Increased Revenue</h3>
+                        <p class="text-gray-600">Mobile ordering increases transaction size and frequency, boosting overall revenue.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="text-[#2ecc71] text-4xl mb-4">-60%</div>
+                        <h3 class="text-xl font-semibold mb-3">Reduced Lines</h3>
+                        <p class="text-gray-600">Shorter lines at concession stands mean more efficient operations and happier fans.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="text-[#2ecc71] text-4xl mb-4">+28%</div>
+                        <h3 class="text-xl font-semibold mb-3">Staff Efficiency</h3>
+                        <p class="text-gray-600">Better resource allocation and streamlined operations with digital ordering.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-16 px-4 bg-gray-900 text-white">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-6">Ready to Transform Your Venue?</h2>
+                <p class="text-xl mb-8">See how Efficiencee's mobile ordering can boost your revenue and fan satisfaction.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="demo-dashboard.html" class="btn-primary px-8 py-4 rounded-md font-semibold inline-block">Try Interactive Demo</a>
+                    <a href="#" class="px-8 py-4 rounded-md font-semibold inline-block border border-white hover:bg-white hover:text-gray-900 transition-colors">Schedule a Call</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-100 py-10">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-gray-600">© 2023 Efficiencee. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const startDemoButton = document.getElementById('start-demo');
+            const phoneScreen = document.getElementById('phone-screen');
+            
+            if (startDemoButton && phoneScreen) {
+                startDemoButton.addEventListener('click', () => {
+                    // Show the menu selection screen
+                    phoneScreen.innerHTML = `
+                        <div class="p-4 bg-[#2ecc71] text-white">
+                            <div class="flex justify-between items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="back-button">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                                <h3 class="text-xl font-bold">Efficiencee Ordering</h3>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between mb-6">
+                                <h4 class="font-bold">Championship Game</h4>
+                                <span class="text-sm text-gray-500">Section 103, Row 12</span>
+                            </div>
+                            
+                            <div class="flex overflow-x-auto space-x-3 pb-2 mb-4">
+                                <div class="flex-shrink-0 bg-[#2ecc71] text-white px-3 py-1 rounded-full">All</div>
+                                <div class="flex-shrink-0 bg-gray-200 px-3 py-1 rounded-full">Food</div>
+                                <div class="flex-shrink-0 bg-gray-200 px-3 py-1 rounded-full">Drinks</div>
+                                <div class="flex-shrink-0 bg-gray-200 px-3 py-1 rounded-full">Snacks</div>
+                                <div class="flex-shrink-0 bg-gray-200 px-3 py-1 rounded-full">Merchandise</div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="flex bg-white p-3 rounded-lg shadow-sm items-center cursor-pointer" id="hot-dog-item">
+                                    <div class="w-16 h-16 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                                        <span class="text-2xl">🌭</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h5 class="font-semibold">Hot Dog</h5>
+                                        <p class="text-sm text-gray-500">Classic stadium hot dog</p>
+                                    </div>
+                                    <div class="font-bold">$6.99</div>
+                                </div>
+                                
+                                <div class="flex bg-white p-3 rounded-lg shadow-sm items-center cursor-pointer">
+                                    <div class="w-16 h-16 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                                        <span class="text-2xl">🍔</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h5 class="font-semibold">Cheeseburger</h5>
+                                        <p class="text-sm text-gray-500">1/4 lb with fries</p>
+                                    </div>
+                                    <div class="font-bold">$12.99</div>
+                                </div>
+                                
+                                <div class="flex bg-white p-3 rounded-lg shadow-sm items-center cursor-pointer">
+                                    <div class="w-16 h-16 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                                        <span class="text-2xl">🍺</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h5 class="font-semibold">Beer, Domestic</h5>
+                                        <p class="text-sm text-gray-500">16 oz draft</p>
+                                    </div>
+                                    <div class="font-bold">$9.99</div>
+                                </div>
+                                
+                                <div class="flex bg-white p-3 rounded-lg shadow-sm items-center cursor-pointer">
+                                    <div class="w-16 h-16 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                                        <span class="text-2xl">🥤</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h5 class="font-semibold">Soda</h5>
+                                        <p class="text-sm text-gray-500">24 oz fountain drink</p>
+                                    </div>
+                                    <div class="font-bold">$5.99</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Add event listeners for navigation
+                    const backButton = document.getElementById('back-button');
+                    if (backButton) {
+                        backButton.addEventListener('click', () => {
+                            location.reload();
+                        });
+                    }
+                    
+                    // Handle item selection
+                    const hotDogItem = document.getElementById('hot-dog-item');
+                    if (hotDogItem) {
+                        hotDogItem.addEventListener('click', () => {
+                            // Show item detail screen
+                            phoneScreen.innerHTML = `
+                                <div class="p-4 bg-[#2ecc71] text-white">
+                                    <div class="flex justify-between items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="back-to-menu">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                        </svg>
+                                        <h3 class="text-xl font-bold">Item Details</h3>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="w-full h-40 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+                                        <span class="text-6xl">🌭</span>
+                                    </div>
+                                    
+                                    <h4 class="text-xl font-bold mb-2">Hot Dog</h4>
+                                    <p class="text-gray-600 mb-4">Classic stadium hot dog served with ketchup and mustard on the side.</p>
+                                    
+                                    <div class="mb-6">
+                                        <h5 class="font-semibold mb-2">Options</h5>
+                                        <div class="flex items-center justify-between mb-2 bg-white p-2 rounded">
+                                            <span>Add Cheese</span>
+                                            <span>+$1.00</span>
+                                        </div>
+                                        <div class="flex items-center justify-between mb-2 bg-white p-2 rounded">
+                                            <span>Add Chili</span>
+                                            <span>+$1.50</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between mb-8">
+                                        <div class="flex items-center">
+                                            <button class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">-</button>
+                                            <span class="mx-4">1</span>
+                                            <button class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">+</button>
+                                        </div>
+                                        <div class="font-bold text-xl">$6.99</div>
+                                    </div>
+                                    
+                                    <button class="w-full py-3 bg-[#2ecc71] text-white rounded-md font-semibold hover:bg-[#27ae60] transition-colors" id="add-to-cart">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            `;
+                            
+                            // Handle back button
+                            const backToMenu = document.getElementById('back-to-menu');
+                            if (backToMenu) {
+                                backToMenu.addEventListener('click', () => {
+                                    // Simulate clicking the start demo button again
+                                    startDemoButton.click();
+                                });
+                            }
+                            
+                            // Handle add to cart
+                            const addToCartButton = document.getElementById('add-to-cart');
+                            if (addToCartButton) {
+                                addToCartButton.addEventListener('click', () => {
+                                    // Show confirmation screen
+                                    phoneScreen.innerHTML = `
+                                        <div class="p-4 bg-[#2ecc71] text-white">
+                                            <div class="flex justify-between items-center">
+                                                <h3 class="text-xl font-bold">Order Confirmation</h3>
+                                            </div>
+                                        </div>
+                                        <div class="p-4 flex flex-col items-center justify-center" style="height: 480px;">
+                                            <div class="w-20 h-20 rounded-full bg-[#2ecc71] flex items-center justify-center mb-6">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            </div>
+                                            <h4 class="text-xl font-bold mb-2">Order Placed!</h4>
+                                            <p class="text-gray-600 mb-6 text-center">Your order has been received and is being prepared.</p>
+                                            
+                                            <div class="bg-gray-100 p-4 rounded-lg w-full mb-6">
+                                                <div class="flex justify-between mb-2">
+                                                    <span>Order #:</span>
+                                                    <span class="font-bold">A-1234</span>
+                                                </div>
+                                                <div class="flex justify-between mb-2">
+                                                    <span>Pickup at:</span>
+                                                    <span class="font-bold">Section 103, Stand C</span>
+                                                </div>
+                                                <div class="flex justify-between">
+                                                    <span>Est. ready in:</span>
+                                                    <span class="font-bold text-[#2ecc71]">5 minutes</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <button class="w-full py-3 bg-[#2ecc71] text-white rounded-md font-semibold hover:bg-[#27ae60] transition-colors" id="return-to-start">
+                                                Return to Start
+                                            </button>
+                                        </div>
+                                    `;
+                                    
+                                    // Handle return to start
+                                    const returnToStartButton = document.getElementById('return-to-start');
+                                    if (returnToStartButton) {
+                                        returnToStartButton.addEventListener('click', () => {
+                                            location.reload();
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

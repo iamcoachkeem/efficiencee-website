@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhance Technology - Inventory Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --money-green: #2ecc71;
+            --money-green-dark: #27ae60;
+        }
+        body {
+            background-color: white;
+            color: #333;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #333, var(--money-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .notification {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .notification-remove {
+            animation: slideOut 0.5s ease-in forwards;
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        .item-card {
+            transition: all 0.3s ease;
+        }
+        .item-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .low-stock {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <nav class="bg-white shadow-sm py-4">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                Enhance<span class="text-[#2ecc71]">Technology</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="preview.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Home</a>
+                <a href="demo-dashboard.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Dashboard</a>
+                <a href="demo-inventory.html" class="text-[#2ecc71] font-medium">Inventory</a>
+                <a href="demo-ticketing.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Ticketing</a>
+            </div>
+            <div>
+                <button class="bg-[#2ecc71] text-white px-5 py-2 rounded-md font-medium hover:bg-[#27ae60] transition-colors">Contact Sales</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-8">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-2">Interactive Inventory Demo</h1>
+                <p class="text-gray-600">Experience our smart inventory management system with real-time tracking and automated reordering.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-xl font-bold">Inventory Dashboard</h2>
+                                <div class="text-sm text-[#2ecc71]">Live Updates</div>
+                            </div>
+
+                            <!-- Inventory Overview -->
+                            <div class="grid grid-cols-3 gap-4 mb-6">
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <div class="text-sm text-gray-600 mb-1">Total Items</div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-2xl font-bold">248</div>
+                                        <div class="text-xs text-[#2ecc71]">↑ 8%</div>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <div class="text-sm text-gray-600 mb-1">Low Stock Items</div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-2xl font-bold">12</div>
+                                        <div class="text-xs text-yellow-500">↑ 3</div>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <div class="text-sm text-gray-600 mb-1">Auto-Orders</div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-2xl font-bold">8</div>
+                                        <div class="text-xs text-[#2ecc71]">This Week</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Inventory Items -->
+                            <div class="mb-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-bold">Inventory Items</h3>
+                                    <div class="flex space-x-2">
+                                        <button id="addItemBtn" class="bg-[#2ecc71] text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-[#27ae60] transition-colors">
+                                            Add Item
+                                        </button>
+                                        <button id="filterBtn" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-sm font-medium hover:bg-gray-300 transition-colors">
+                                            Filter
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="overflow-hidden rounded-lg border border-gray-100">
+                                    <table class="w-full text-left text-sm">
+                                        <thead class="bg-gray-50 text-xs uppercase text-gray-700">
+                                            <tr>
+                                                <th class="px-3 py-2">Item</th>
+                                                <th class="px-3 py-2">Category</th>
+                                                <th class="px-3 py-2">Stock</th>
+                                                <th class="px-3 py-2">Status</th>
+                                                <th class="px-3 py-2">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="inventoryTable" class="divide-y divide-gray-100">
+                                            <!-- Inventory items will be dynamically generated -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Stock Alerts -->
+                            <div class="border-t pt-4">
+                                <h3 class="text-lg font-bold mb-4">Stock Alerts</h3>
+                                <div id="stockAlerts" class="space-y-2">
+                                    <!-- Stock alerts will be dynamically added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side Panel -->
+                <div class="space-y-6">
+                    <!-- Notifications Panel -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold mb-4">Live Updates</h3>
+                            <div id="notifications" class="space-y-4">
+                                <!-- Notifications will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold mb-4">Categories</h3>
+                            <div class="space-y-4">
+                                <div class="p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <div class="font-medium">Food & Beverages</div>
+                                            <div class="text-sm text-gray-600">124 items</div>
+                                        </div>
+                                        <div class="text-[#2ecc71] font-medium">52%</div>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <div class="font-medium">Merchandise</div>
+                                            <div class="text-sm text-gray-600">86 items</div>
+                                        </div>
+                                        <div class="text-[#2ecc71] font-medium">35%</div>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <div class="font-medium">Supplies</div>
+                                            <div class="text-sm text-gray-600">38 items</div>
+                                        </div>
+                                        <div class="text-[#2ecc71] font-medium">13%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold mb-4">Inventory Stats</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">Stock Turnover</span>
+                                        <span class="font-medium">+18%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-[#2ecc71] h-2 rounded-full" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">Waste Reduction</span>
+                                        <span class="font-medium">-15%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-[#2ecc71] h-2 rounded-full" style="width: 82%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Item Modal -->
+    <div id="addItemModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">Add New Item</h3>
+                    <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <form id="addItemForm">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Item Name</label>
+                        <input type="text" id="itemName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2ecc71] focus:border-transparent" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <select id="itemCategory" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2ecc71] focus:border-transparent" required>
+                            <option value="food">Food & Beverages</option>
+                            <option value="merch">Merchandise</option>
+                            <option value="supplies">Supplies</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Initial Stock</label>
+                        <input type="number" id="itemStock" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2ecc71] focus:border-transparent" min="0" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Low Stock Threshold</label>
+                        <input type="number" id="itemThreshold" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2ecc71] focus:border-transparent" min="1" required>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="button" id="cancelBtn" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md mr-2 hover:bg-gray-300 transition-colors">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-[#2ecc71] text-white rounded-md hover:bg-[#27ae60] transition-colors">Add Item</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample inventory data
+        const inventoryData = [
+            { id: 1, name: "Beer, Domestic", category: "Food & Beverages", stock: 458, threshold: 100, status: "In Stock" },
+            { id: 2, name: "Chicken Tenders", category: "Food & Beverages", stock: 42, threshold: 50, status: "Low Stock" },
+            { id: 3, name: "Hot Dogs", category: "Food & Beverages", stock: 324, threshold: 75, status: "In Stock" },
+            { id: 4, name: "Team Jersey", category: "Merchandise", stock: 86, threshold: 30, status: "In Stock" },
+            { id: 5, name: "Baseball Cap", category: "Merchandise", stock: 12, threshold: 25, status: "Low Stock" },
+            { id: 6, name: "Program Book", category: "Merchandise", stock: 245, threshold: 50, status: "In Stock" },
+            { id: 7, name: "Napkins", category: "Supplies", stock: 1200, threshold: 500, status: "In Stock" },
+            { id: 8, name: "Cups", category: "Supplies", stock: 180, threshold: 300, status: "Low Stock" },
+            { id: 9, name: "Straws", category: "Supplies", stock: 950, threshold: 400, status: "In Stock" }
+        ];
+
+        // Function to generate inventory table
+        function generateInventoryTable() {
+            const tableBody = document.getElementById('inventoryTable');
+            tableBody.innerHTML = '';
+            
+            inventoryData.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'bg-white';
+                
+                const statusClass = item.status === "Low Stock" ? 
+                    "px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800 text-xs" : 
+                    "px-2 py-0.5 rounded-full bg-[#2ecc71]/10 text-[#2ecc71] text-xs";
+                
+                row.innerHTML = `
+                    <td class="px-3 py-2 font-medium">${item.name}</td>
+                    <td class="px-3 py-2">${item.category}</td>
+                    <td class="px-3 py-2">
+                        <div class="flex items-center">
+                            <div class="w-full bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-[#2ecc71] h-2 rounded-full progress-bar" style="width: ${Math.min(100, (item.stock / item.threshold) * 50)}%"></div>
+                            </div>
+                            <span>${item.stock}</span>
+                        </div>
+                    </td>
+                    <td class="px-3 py-2"><span class="${statusClass}">${item.status}</span></td>
+                    <td class="px-3 py-2">
+                        <div class="flex space-x-2">
+                            <button class="text-blue-500 hover:text-blue-700" onclick="adjustStock(${item.id}, 10)">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </button>
+                            <button class="text-red-500 hover:text-red-700" onclick="adjustStock(${item.id}, -10)">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to adjust stock
+        function adjustStock(itemId, amount) {
+            const item = inventoryData.find(i => i.id === itemId);
+            if (item) {
+                const oldStock = item.stock;
+                item.stock = Math.max(0, item.stock + amount);
+                
+                // Update status
+                item.status = item.stock <= item.threshold ? "Low Stock" : "In Stock";
+                
+                // Create notification
+                const notificationsContainer = document.getElementById('notifications');
+                const message = amount > 0 ? 
+                    `Added ${amount} units of ${item.name}. New stock: ${item.stock}` : 
+                    `Removed ${Math.abs(amount)} units of ${item.name}. New stock: ${item.stock}`;
+                
+                notificationsContainer.insertBefore(
+                    createNotification(message, amount > 0 ? 'success' : 'info'),
+                    notificationsContainer.firstChild
+                );
+                
+                // Update stock alerts
+                updateStockAlerts();
+                
+                // Regenerate table
+                generateInventoryTable();
+            }
+        }
+
+        // Function to update stock alerts
+        function updateStockAlerts() {
+            const alertsContainer = document.getElementById('stockAlerts');
+            alertsContainer.innerHTML = '';
+            
+            const lowStockItems = inventoryData.filter(item => item.status === "Low Stock");
+            
+            if (lowStockItems.length === 0) {
+                alertsContainer.innerHTML = '<div class="text-sm text-gray-500">No low stock alerts</div>';
+                return;
+            }
+            
+            lowStockItems.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'p-3 bg-yellow-50 rounded-lg low-stock';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <div class="font-medium">${item.name}</div>
+                            <div class="text-sm text-gray-600">Current stock: ${item.stock} (Threshold: ${item.threshold})</div>
+                        </div>
+                        <button class="text-[#2ecc71] font-medium" onclick="adjustStock(${item.id}, 50)">Order</button>
+                    </div>
+                `;
+                alertsContainer.appendChild(div);
+            });
+        }
+
+        // Function to create notification
+        function createNotification(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `notification p-3 rounded-lg ${
+                type === 'success' ? 'bg-[#2ecc71]/10 text-[#2ecc71]' :
+                type === 'warning' ? 'bg-yellow-50 text-yellow-800' :
+                'bg-blue-50 text-blue-800'
+            }`;
+            
+            div.innerHTML = `
+                <div class="flex items-start">
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">${message}</p>
+                        <p class="text-xs mt-1">Just now</p>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-600" onclick="this.parentElement.parentElement.remove()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('addItemModal').classList.remove('hidden');
+        }
+        
+        function closeModal() {
+            document.getElementById('addItemModal').classList.add('hidden');
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            generateInventoryTable();
+            updateStockAlerts();
+            
+            // Add sample notifications
+            const notificationsContainer = document.getElementById('notifications');
+            notificationsContainer.appendChild(createNotification('Auto-order placed for Chicken Tenders', 'success'));
+            notificationsContainer.appendChild(createNotification('Low stock alert: Baseball Caps', 'warning'));
+            
+            // Modal event listeners
+            document.getElementById('addItemBtn').addEventListener('click', openModal);
+            document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+            
+            // Form submission
+            document.getElementById('addItemForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('itemName').value;
+                const category = document.getElementById('itemCategory').value;
+                const stock = parseInt(document.getElementById('itemStock').value);
+                const threshold = parseInt(document.getElementById('itemThreshold').value);
+                
+                // Add new item to inventory
+                const newId = Math.max(...inventoryData.map(item => item.id)) + 1;
+                const categoryName = document.getElementById('itemCategory').options[document.getElementById('itemCategory').selectedIndex].text;
+                
+                inventoryData.push({
+                    id: newId,
+                    name: name,
+                    category: categoryName,
+                    stock: stock,
+                    threshold: threshold,
+                    status: stock <= threshold ? "Low Stock" : "In Stock"
+                });
+                
+                // Create notification
+                notificationsContainer.insertBefore(
+                    createNotification(`Added new item: ${name}`, 'success'),
+                    notificationsContainer.firstChild
+                );
+                
+                // Update UI
+                generateInventoryTable();
+                updateStockAlerts();
+                
+                // Close modal and reset form
+                closeModal();
+                document.getElementById('addItemForm').reset();
+            });
+        });
+    </script>
+</body>
+</html> 

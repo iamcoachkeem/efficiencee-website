@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Demo - Enhance Technology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --money-green: #2ecc71;
+            --money-green-dark: #27ae60;
+        }
+        body {
+            background-color: white;
+            color: #333;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .btn-primary {
+            background-color: var(--money-green);
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: var(--money-green-dark);
+        }
+        .stat-card {
+            border-left: 4px solid var(--money-green);
+            transition: all 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        .tab-active {
+            border-bottom: 3px solid var(--money-green);
+            color: var(--money-green);
+        }
+        .select-control {
+            appearance: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            background-color: white;
+            font-size: 14px;
+            font-weight: 500;
+            width: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M12 16l-6-6h12z' fill='rgba(0,0,0,0.5)'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 16px;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="bg-white shadow-sm py-4">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                <a href="preview.html">Enhance<span class="text-[#2ecc71]">Technology</span></a>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="demo-dashboard.html" class="text-[#2ecc71] font-medium">Interactive Demo</a>
+                <a href="analytics.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Analytics</a>
+                <a href="mobile-ordering.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Mobile Ordering</a>
+                <a href="demo-inventory.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Inventory</a>
+                <a href="demo-ticketing.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Ticketing</a>
+            </div>
+            <div>
+                <button class="btn-primary px-5 py-2 rounded-md font-medium">Contact Sales</button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-gray-100 py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold">Interactive Venue Dashboard</h1>
+                <div class="flex items-center space-x-3">
+                    <div class="px-3 py-1 bg-[#2ecc71]/20 text-[#2ecc71] rounded-md flex items-center text-sm">
+                        <div class="w-2 h-2 rounded-full bg-[#2ecc71] mr-2 animate-pulse"></div>
+                        Live Demo
+                    </div>
+                    <div class="text-sm text-gray-600">Try changing the filters to see how the data updates</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg border border-gray-200 p-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Event</label>
+                    <select id="event-select" class="select-control">
+                        <option value="championship">Championship Game</option>
+                        <option value="concert">Rock Concert</option>
+                        <option value="convention">Tech Convention</option>
+                    </select>
+                </div>
+                <div class="bg-white rounded-lg border border-gray-200 p-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+                    <select id="date-select" class="select-control">
+                        <option value="today">Today (Live)</option>
+                        <option value="week">Past 7 Days</option>
+                        <option value="month">Past 30 Days</option>
+                    </select>
+                </div>
+                <div class="bg-white rounded-lg border border-gray-200 p-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                    <select id="location-select" class="select-control">
+                        <option value="all">All Locations</option>
+                        <option value="main">Main Stadium</option>
+                        <option value="north">North Gate</option>
+                        <option value="vip">VIP Sections</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="py-8">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="mb-8">
+                <div class="flex border-b border-gray-200">
+                    <button class="tab-active px-6 py-3 font-medium">Overview</button>
+                    <button class="text-gray-600 px-6 py-3 font-medium">Sales</button>
+                    <button class="text-gray-600 px-6 py-3 font-medium">Operations</button>
+                    <button class="text-gray-600 px-6 py-3 font-medium">Customers</button>
+                </div>
+            </div>
+
+            <!-- Key Metrics -->
+            <section class="mb-8">
+                <h2 class="text-xl font-bold mb-4">Key Metrics</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 stat-card">
+                        <div class="text-sm text-gray-500 uppercase font-medium">Total Revenue</div>
+                        <div class="flex items-end justify-between">
+                            <div class="text-2xl font-bold" id="revenue-value">$23,481</div>
+                            <div class="text-sm text-[#2ecc71] flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                </svg>
+                                <span id="revenue-change">32%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 stat-card">
+                        <div class="text-sm text-gray-500 uppercase font-medium">Orders</div>
+                        <div class="flex items-end justify-between">
+                            <div class="text-2xl font-bold" id="orders-value">1,842</div>
+                            <div class="text-sm text-[#2ecc71] flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                </svg>
+                                <span id="orders-change">15%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 stat-card">
+                        <div class="text-sm text-gray-500 uppercase font-medium">Avg Order Value</div>
+                        <div class="flex items-end justify-between">
+                            <div class="text-2xl font-bold" id="aov-value">$12.75</div>
+                            <div class="text-sm text-[#2ecc71] flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                </svg>
+                                <span id="aov-change">8%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 stat-card">
+                        <div class="text-sm text-gray-500 uppercase font-medium">Customer Satisfaction</div>
+                        <div class="flex items-end justify-between">
+                            <div class="text-2xl font-bold" id="csat-value">92%</div>
+                            <div class="text-sm text-[#2ecc71] flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                </svg>
+                                <span id="csat-change">5%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts -->
+            <section class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                    <h3 class="font-medium mb-4">Revenue by Hour</h3>
+                    <canvas id="revenueChart" height="250"></canvas>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                    <h3 class="font-medium mb-4">Popular Items</h3>
+                    <canvas id="itemsChart" height="250"></canvas>
+                </div>
+            </section>
+
+            <!-- Popular Items Table -->
+            <section class="mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Top Selling Items</h2>
+                    <div class="text-sm text-[#2ecc71]">View All Items</div>
+                </div>
+                <div class="overflow-hidden rounded-lg border border-gray-100">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 text-xs uppercase text-gray-700">
+                            <tr>
+                                <th class="px-4 py-3">Item</th>
+                                <th class="px-4 py-3">Sales</th>
+                                <th class="px-4 py-3">Revenue</th>
+                                <th class="px-4 py-3">Stock</th>
+                                <th class="px-4 py-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100" id="items-table">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Recent Activity</h2>
+                    <div class="px-3 py-1 bg-[#2ecc71]/20 text-[#2ecc71] rounded-md flex items-center text-sm">
+                        <div class="w-2 h-2 rounded-full bg-[#2ecc71] mr-2 animate-pulse"></div>
+                        Live Updates
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-3" id="activity-feed">
+                    <!-- Activity items will be populated by JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-gray-100 py-10 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-gray-600">This is an interactive demo. In a real implementation, all data would be live from your venue.</p>
+            <div class="mt-4">
+                <button class="btn-primary px-6 py-3 rounded-md font-semibold">Schedule a Custom Demo</button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample data
+        const eventData = {
+            championship: {
+                revenue: { value: '$23,481', change: '32%' },
+                orders: { value: '1,842', change: '15%' },
+                aov: { value: '$12.75', change: '8%' },
+                csat: { value: '92%', change: '5%' },
+                hourlyRevenue: [1200, 2450, 3800, 2900, 4800, 3900, 2900, 1800],
+                popularItems: [
+                    { name: 'Beer, Domestic', sales: 458, revenue: '$4,580', stock: 'In Stock' },
+                    { name: 'Chicken Tenders', sales: 387, revenue: '$3,870', stock: 'Low' },
+                    { name: 'Hot Dogs', sales: 324, revenue: '$3,240', stock: 'In Stock' },
+                    { name: 'Nachos', sales: 256, revenue: '$2,560', stock: 'In Stock' },
+                    { name: 'Soda', sales: 198, revenue: '$990', stock: 'In Stock' }
+                ],
+                activity: [
+                    { type: 'alert', message: 'Inventory alert: Chicken Tenders running low', time: 'Just now' },
+                    { type: 'success', message: 'Mobile sales up 42% in Section 201-204', time: '2m ago' },
+                    { type: 'info', message: 'Wait time at Concession Stand 3 exceeds 10 minutes', time: '5m ago' },
+                    { type: 'success', message: 'New record: 120 orders processed in last hour', time: '15m ago' }
+                ]
+            },
+            concert: {
+                revenue: { value: '$48,762', change: '54%' },
+                orders: { value: '3,241', change: '37%' },
+                aov: { value: '$15.05', change: '12%' },
+                csat: { value: '88%', change: '2%' },
+                hourlyRevenue: [2200, 5450, 7800, 8900, 9800, 7900, 4900, 3800],
+                popularItems: [
+                    { name: 'Beer, Premium', sales: 876, revenue: '$8,760', stock: 'In Stock' },
+                    { name: 'Cocktails', sales: 543, revenue: '$7,602', stock: 'In Stock' },
+                    { name: 'Pizza Slice', sales: 432, revenue: '$4,320', stock: 'Low' },
+                    { name: 'Merchandise T-Shirt', sales: 325, revenue: '$9,750', stock: 'In Stock' },
+                    { name: 'Wine', sales: 287, revenue: '$4,305', stock: 'In Stock' }
+                ],
+                activity: [
+                    { type: 'success', message: 'VIP area sales exceeded $12,000 in last hour', time: 'Just now' },
+                    { type: 'info', message: 'Merchandise sales peaked during intermission', time: '8m ago' },
+                    { type: 'alert', message: 'Pizza inventory running low at north concessions', time: '12m ago' },
+                    { type: 'success', message: 'Mobile order usage up 75% compared to last event', time: '25m ago' }
+                ]
+            },
+            convention: {
+                revenue: { value: '$31,245', change: '18%' },
+                orders: { value: '2,134', change: '22%' },
+                aov: { value: '$14.65', change: '5%' },
+                csat: { value: '95%', change: '7%' },
+                hourlyRevenue: [5200, 6450, 4800, 6900, 7800, 6900, 5900, 4800],
+                popularItems: [
+                    { name: 'Coffee', sales: 754, revenue: '$3,770', stock: 'In Stock' },
+                    { name: 'Boxed Lunch', sales: 523, revenue: '$7,845', stock: 'In Stock' },
+                    { name: 'Energy Drinks', sales: 376, revenue: '$2,256', stock: 'In Stock' },
+                    { name: 'Pastries', sales: 312, revenue: '$1,560', stock: 'Low' },
+                    { name: 'Bottled Water', sales: 287, revenue: '$861', stock: 'In Stock' }
+                ],
+                activity: [
+                    { type: 'info', message: 'Peak traffic at coffee stands between 9-10am', time: 'Just now' },
+                    { type: 'success', message: 'Pre-orders for lunch up 45% from yesterday', time: '5m ago' },
+                    { type: 'info', message: 'Average order fulfillment time: 3.2 minutes', time: '18m ago' },
+                    { type: 'alert', message: 'Pastry inventory below 20% at main entrance', time: '30m ago' }
+                ]
+            }
+        };
+
+        // Initialize charts
+        let revenueChart, itemsChart;
+
+        // Setup active event data
+        let currentEvent = 'championship';
+
+        function updateDashboard(eventType) {
+            const data = eventData[eventType];
+            
+            // Update metrics
+            document.getElementById('revenue-value').textContent = data.revenue.value;
+            document.getElementById('revenue-change').textContent = data.revenue.change;
+            document.getElementById('orders-value').textContent = data.orders.value;
+            document.getElementById('orders-change').textContent = data.orders.change;
+            document.getElementById('aov-value').textContent = data.aov.value;
+            document.getElementById('aov-change').textContent = data.aov.change;
+            document.getElementById('csat-value').textContent = data.csat.value;
+            document.getElementById('csat-change').textContent = data.csat.change;
+
+            // Update revenue chart
+            updateRevenueChart(data.hourlyRevenue);
+
+            // Update items chart
+            updateItemsChart(data.popularItems);
+
+            // Update items table
+            updateItemsTable(data.popularItems);
+
+            // Update activity feed
+            updateActivityFeed(data.activity);
+        }
+
+        function updateRevenueChart(data) {
+            if (revenueChart) {
+                revenueChart.destroy();
+            }
+
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            revenueChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm'],
+                    datasets: [{
+                        label: 'Revenue ($)',
+                        data: data,
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateItemsChart(items) {
+            if (itemsChart) {
+                itemsChart.destroy();
+            }
+
+            const itemNames = items.map(item => item.name);
+            const itemSales = items.map(item => item.sales);
+
+            const ctx = document.getElementById('itemsChart').getContext('2d');
+            itemsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: itemNames,
+                    datasets: [{
+                        label: 'Units Sold',
+                        data: itemSales,
+                        backgroundColor: [
+                            'rgba(46, 204, 113, 0.8)',
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(46, 204, 113, 0.6)',
+                            'rgba(46, 204, 113, 0.5)',
+                            'rgba(46, 204, 113, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(46, 204, 113, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateItemsTable(items) {
+            const tableBody = document.getElementById('items-table');
+            tableBody.innerHTML = '';
+
+            items.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'bg-white';
+                
+                const stockClass = item.stock === 'Low' 
+                    ? 'bg-yellow-100 text-yellow-800' 
+                    : 'bg-[#2ecc71]/10 text-[#2ecc71]';
+
+                row.innerHTML = `
+                    <td class="px-4 py-3 font-medium">${item.name}</td>
+                    <td class="px-4 py-3">${item.sales}</td>
+                    <td class="px-4 py-3">${item.revenue}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded-full ${stockClass} text-xs">${item.stock}</span>
+                    </td>
+                    <td class="px-4 py-3">
+                        <button class="text-gray-600 hover:text-[#2ecc71]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        function updateActivityFeed(activities) {
+            const activityFeed = document.getElementById('activity-feed');
+            activityFeed.innerHTML = '';
+
+            activities.forEach(activity => {
+                const item = document.createElement('div');
+                item.className = 'bg-white p-4 rounded-lg border border-gray-100 flex items-start';
+
+                let dotColor;
+                switch(activity.type) {
+                    case 'alert': dotColor = 'bg-red-500'; break;
+                    case 'success': dotColor = 'bg-[#2ecc71]'; break;
+                    default: dotColor = 'bg-blue-500';
+                }
+
+                item.innerHTML = `
+                    <div class="w-2 h-2 rounded-full ${dotColor} mt-1.5 mr-3"></div>
+                    <div class="flex-1">
+                        <div class="text-sm">${activity.message}</div>
+                        <div class="text-xs text-gray-500 mt-1">${activity.time}</div>
+                    </div>
+                `;
+                
+                activityFeed.appendChild(item);
+            });
+        }
+
+        // Initialize dashboard with default data
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set up event listeners for select controls
+            document.getElementById('event-select').addEventListener('change', (e) => {
+                currentEvent = e.target.value;
+                updateDashboard(currentEvent);
+            });
+
+            // Simulate data updates periodically
+            setInterval(() => {
+                const randomActivity = {
+                    type: ['info', 'success', 'alert'][Math.floor(Math.random() * 3)],
+                    message: [
+                        'New mobile order placed from Section 102',
+                        'Peak activity detected at east entrance',
+                        'Sales of merchandise trending up in last 15 minutes',
+                        'Wait time at Concession 2 decreased to 2 minutes'
+                    ][Math.floor(Math.random() * 4)],
+                    time: 'Just now'
+                };
+
+                // Add to the beginning of the activities array
+                eventData[currentEvent].activity.unshift(randomActivity);
+                // Keep only the last 4 activities
+                eventData[currentEvent].activity = eventData[currentEvent].activity.slice(0, 4);
+                
+                // Update the activity feed with new data
+                updateActivityFeed(eventData[currentEvent].activity);
+            }, 8000);
+
+            // Initialize dashboard
+            updateDashboard(currentEvent);
+        });
+    </script>
+</body>
+</html> 

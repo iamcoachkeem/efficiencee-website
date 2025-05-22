@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhance Technology - Ticketing Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --money-green: #2ecc71;
+            --money-green-dark: #27ae60;
+        }
+        body {
+            background-color: white;
+            color: #333;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #333, var(--money-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .notification {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .notification-remove {
+            animation: slideOut 0.5s ease-in forwards;
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        .seat {
+            transition: all 0.3s ease;
+        }
+        .seat:hover:not(.occupied):not(.selected) {
+            transform: scale(1.1);
+        }
+        .seat.selected {
+            background-color: var(--money-green);
+            color: white;
+        }
+        .seat.occupied {
+            background-color: #e2e8f0;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <nav class="bg-white shadow-sm py-4">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                Enhance<span class="text-[#2ecc71]">Technology</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="preview.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Home</a>
+                <a href="demo-dashboard.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Dashboard</a>
+                <a href="demo-inventory.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Inventory</a>
+                <a href="demo-ticketing.html" class="text-[#2ecc71] font-medium">Ticketing</a>
+            </div>
+            <div>
+                <button class="bg-[#2ecc71] text-white px-5 py-2 rounded-md font-medium hover:bg-[#27ae60] transition-colors">Contact Sales</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-8">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-2">Interactive Ticketing Demo</h1>
+                <p class="text-gray-600">Experience our seamless ticketing system with real-time seat selection and instant confirmation.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-xl font-bold">Championship Game - May 15, 2024</h2>
+                                <div class="text-sm text-[#2ecc71]">Live Updates</div>
+                            </div>
+
+                            <!-- Event Details -->
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <div class="text-sm text-gray-600 mb-1">Available Seats</div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-2xl font-bold">1,842</div>
+                                        <div class="text-xs text-[#2ecc71]">↑ 15%</div>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <div class="text-sm text-gray-600 mb-1">Total Revenue</div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-2xl font-bold">$184,200</div>
+                                        <div class="text-xs text-[#2ecc71]">↑ 32%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Seating Chart -->
+                            <div class="mb-6">
+                                <h3 class="text-lg font-bold mb-4">Select Your Seats</h3>
+                                <div class="bg-gray-100 p-6 rounded-lg">
+                                    <div class="grid grid-cols-10 gap-2" id="seatingChart">
+                                        <!-- Seats will be dynamically generated -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Selected Seats Summary -->
+                            <div class="border-t pt-4">
+                                <h3 class="text-lg font-bold mb-4">Selected Seats</h3>
+                                <div id="selectedSeats" class="space-y-2">
+                                    <!-- Selected seats will be listed here -->
+                                </div>
+                                <div class="mt-4 flex justify-between items-center">
+                                    <div class="text-lg font-bold">Total: $<span id="totalPrice">0</span></div>
+                                    <button id="purchaseBtn" class="bg-[#2ecc71] text-white px-6 py-2 rounded-md font-medium hover:bg-[#27ae60] transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                        Purchase Tickets
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side Panel -->
+                <div class="space-y-6">
+                    <!-- Notifications Panel -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold mb-4">Live Updates</h3>
+                            <div id="notifications" class="space-y-4">
+                                <!-- Notifications will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Popular Sections -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold mb-4">Popular Sections</h3>
+                            <div class="space-y-4">
+                                <div class="p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <div class="font-medium">Section 101</div>
+                                            <div class="text-sm text-gray-600">Premium View</div>
+                                        </div>
+                                        <div class="text-[#2ecc71] font-medium">$150</div>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <div class="font-medium">Section 201</div>
+                                            <div class="text-sm text-gray-600">Club Level</div>
+                                        </div>
+                                        <div class="text-[#2ecc71] font-medium">$200</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold mb-4">Event Stats</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">Tickets Sold Today</span>
+                                        <span class="font-medium">+42%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-[#2ecc71] h-2 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">Average Order Value</span>
+                                        <span class="font-medium">$125</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-[#2ecc71] h-2 rounded-full" style="width: 92%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sample data for seats
+        const seatData = {
+            rows: 10,
+            seatsPerRow: 10,
+            pricePerSeat: 100,
+            occupiedSeats: [
+                '1-3', '1-4', '1-5', '2-2', '2-3', '2-4', '2-5', '2-6',
+                '3-1', '3-2', '3-3', '3-4', '3-5', '3-6', '3-7', '3-8',
+                '4-2', '4-3', '4-4', '4-5', '4-6', '4-7'
+            ]
+        };
+
+        // Selected seats tracking
+        let selectedSeats = new Set();
+
+        // Function to generate seating chart
+        function generateSeatingChart() {
+            const container = document.getElementById('seatingChart');
+            container.innerHTML = '';
+
+            for (let row = 1; row <= seatData.rows; row++) {
+                for (let seat = 1; seat <= seatData.seatsPerRow; seat++) {
+                    const seatId = `${row}-${seat}`;
+                    const isOccupied = seatData.occupiedSeats.includes(seatId);
+                    
+                    const seatElement = document.createElement('div');
+                    seatElement.className = `seat w-8 h-8 flex items-center justify-center rounded cursor-pointer ${
+                        isOccupied ? 'occupied' : 'bg-gray-200 hover:bg-gray-300'
+                    }`;
+                    seatElement.textContent = seat;
+                    seatElement.dataset.seatId = seatId;
+                    
+                    if (!isOccupied) {
+                        seatElement.addEventListener('click', () => toggleSeatSelection(seatId));
+                    }
+                    
+                    container.appendChild(seatElement);
+                }
+            }
+        }
+
+        // Function to toggle seat selection
+        function toggleSeatSelection(seatId) {
+            const seatElement = document.querySelector(`[data-seat-id="${seatId}"]`);
+            
+            if (selectedSeats.has(seatId)) {
+                selectedSeats.delete(seatId);
+                seatElement.classList.remove('selected');
+            } else {
+                selectedSeats.add(seatId);
+                seatElement.classList.add('selected');
+            }
+            
+            updateSelectedSeatsSummary();
+            updatePurchaseButton();
+        }
+
+        // Function to update selected seats summary
+        function updateSelectedSeatsSummary() {
+            const container = document.getElementById('selectedSeats');
+            container.innerHTML = '';
+            
+            selectedSeats.forEach(seatId => {
+                const [row, seat] = seatId.split('-');
+                const div = document.createElement('div');
+                div.className = 'flex justify-between items-center p-2 bg-gray-50 rounded';
+                div.innerHTML = `
+                    <span>Row ${row}, Seat ${seat}</span>
+                    <span class="text-[#2ecc71] font-medium">$${seatData.pricePerSeat}</span>
+                `;
+                container.appendChild(div);
+            });
+            
+            document.getElementById('totalPrice').textContent = 
+                (selectedSeats.size * seatData.pricePerSeat).toLocaleString();
+        }
+
+        // Function to update purchase button state
+        function updatePurchaseButton() {
+            const button = document.getElementById('purchaseBtn');
+            button.disabled = selectedSeats.size === 0;
+        }
+
+        // Function to create notification
+        function createNotification(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `notification p-3 rounded-lg ${
+                type === 'success' ? 'bg-[#2ecc71]/10 text-[#2ecc71]' :
+                type === 'warning' ? 'bg-yellow-50 text-yellow-800' :
+                'bg-blue-50 text-blue-800'
+            }`;
+            
+            div.innerHTML = `
+                <div class="flex items-start">
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">${message}</p>
+                        <p class="text-xs mt-1">Just now</p>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-600" onclick="this.parentElement.parentElement.remove()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            generateSeatingChart();
+            
+            // Add sample notifications
+            const notificationsContainer = document.getElementById('notifications');
+            notificationsContainer.appendChild(createNotification('New tickets released in Section 101!', 'success'));
+            notificationsContainer.appendChild(createNotification('High demand expected for this event', 'warning'));
+            
+            // Add purchase button handler
+            document.getElementById('purchaseBtn').addEventListener('click', () => {
+                if (selectedSeats.size > 0) {
+                    const total = selectedSeats.size * seatData.pricePerSeat;
+                    notificationsContainer.insertBefore(
+                        createNotification(`Successfully purchased ${selectedSeats.size} tickets for $${total.toLocaleString()}!`, 'success'),
+                        notificationsContainer.firstChild
+                    );
+                    
+                    // Clear selection
+                    selectedSeats.clear();
+                    generateSeatingChart();
+                    updateSelectedSeatsSummary();
+                    updatePurchaseButton();
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

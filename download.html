@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Efficiencee - Venue Management Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --money-green: #2ecc71;
+            --money-green-dark: #27ae60;
+        }
+        body {
+            background-color: white;
+            color: #333;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #333, var(--money-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .btn-primary {
+            background-color: var(--money-green);
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: var(--money-green-dark);
+        }
+        .download-card {
+            transition: all 0.3s;
+        }
+        .download-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="bg-white shadow-sm py-4">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                Efficiencee<span class="text-[#2ecc71]">Technology</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="preview.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Home</a>
+                <a href="demo-dashboard.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Interactive Demo</a>
+                <a href="mobile-ordering.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Mobile Ordering</a>
+            </div>
+            <div>
+                <button class="btn-primary px-5 py-2 rounded-md font-medium">Contact Sales</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="py-16 px-4 bg-gray-50">
+            <div class="max-w-6xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 gradient-text">
+                    Download Efficiencee
+                </h1>
+                <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                    Get started with Efficiencee's all-in-one venue management platform. Choose your platform below to download the latest version.
+                </p>
+            </div>
+        </section>
+
+        <!-- Download Options -->
+        <section class="py-16 px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center download-card">
+                        <div class="text-5xl mb-4">🪟</div>
+                        <h3 class="text-2xl font-semibold mb-2">Windows</h3>
+                        <p class="text-gray-600 mb-4">Download for Windows 10/11</p>
+                        <div class="mb-4">
+                            <span class="text-sm text-gray-500">Version 1.0.0</span>
+                        </div>
+                        <a href="downloads/enhance-tech-windows.exe" class="btn-primary px-8 py-3 rounded-md font-semibold inline-block w-full">Download for Windows</a>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center download-card">
+                        <div class="text-5xl mb-4">🍎</div>
+                        <h3 class="text-2xl font-semibold mb-2">macOS</h3>
+                        <p class="text-gray-600 mb-4">Download for macOS 10.15+</p>
+                        <div class="mb-4">
+                            <span class="text-sm text-gray-500">Version 1.0.0</span>
+                        </div>
+                        <a href="downloads/enhance-tech-mac.dmg" class="btn-primary px-8 py-3 rounded-md font-semibold inline-block w-full">Download for macOS</a>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center download-card">
+                        <div class="text-5xl mb-4">🐧</div>
+                        <h3 class="text-2xl font-semibold mb-2">Linux</h3>
+                        <p class="text-gray-600 mb-4">Download for Ubuntu 20.04+</p>
+                        <div class="mb-4">
+                            <span class="text-sm text-gray-500">Version 1.0.0</span>
+                        </div>
+                        <a href="downloads/enhance-tech-linux.AppImage" class="btn-primary px-8 py-3 rounded-md font-semibold inline-block w-full">Download for Linux</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trial Information -->
+        <section class="py-16 px-4 bg-gray-50">
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-4">Need a Trial License?</h2>
+                    <p class="text-gray-600 mb-6">
+                        Efficiencee offers a 30-day free trial with full access to all features. No credit card required.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="trial-request.html" class="btn-primary px-8 py-3 rounded-md font-semibold text-center">
+                            Request Trial License
+                        </a>
+                        <a href="#" class="px-8 py-3 rounded-md font-semibold text-center border border-gray-300 hover:border-[#2ecc71] transition-colors">
+                            Contact Sales
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Installation Guide -->
+        <section class="py-16 px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-center">Installation Guide</h2>
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Windows Installation</h3>
+                        <ol class="list-decimal pl-5 space-y-2 text-gray-600">
+                            <li>Download the Windows installer (.exe file)</li>
+                            <li>Run the installer and follow the on-screen instructions</li>
+                            <li>Launch Efficiencee from your desktop or start menu</li>
+                            <li>Enter your trial license key when prompted</li>
+                        </ol>
+                    </div>
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">macOS Installation</h3>
+                        <ol class="list-decimal pl-5 space-y-2 text-gray-600">
+                            <li>Download the macOS installer (.dmg file)</li>
+                            <li>Open the .dmg file and drag the Efficiencee app to your Applications folder</li>
+                            <li>Launch Efficiencee from your Applications folder</li>
+                            <li>Enter your trial license key when prompted</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Linux Installation</h3>
+                        <ol class="list-decimal pl-5 space-y-2 text-gray-600">
+                            <li>Download the Linux AppImage file</li>
+                            <li>Make the file executable: <code class="bg-gray-100 px-2 py-1 rounded">chmod +x enhance-tech-linux.AppImage</code></li>
+                            <li>Run the AppImage: <code class="bg-gray-100 px-2 py-1 rounded">./enhance-tech-linux.AppImage</code></li>
+                            <li>Enter your trial license key when prompted</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Efficiencee</h3>
+                    <p class="text-gray-400">All-in-one venue management platform for increased revenue and improved operations.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Features</a></li>
+                        <li><a href="#" class="hover:text-white">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white">Download</a></li>
+                        <li><a href="#" class="hover:text-white">Updates</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Documentation</a></li>
+                        <li><a href="#" class="hover:text-white">Tutorials</a></li>
+                        <li><a href="#" class="hover:text-white">API Reference</a></li>
+                        <li><a href="#" class="hover:text-white">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">About</a></li>
+                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                        <li><a href="#" class="hover:text-white">Careers</a></li>
+                        <li><a href="#" class="hover:text-white">Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 Efficiencee. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 

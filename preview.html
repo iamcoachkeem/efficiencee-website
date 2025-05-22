@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efficiencee - Venue Management Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --money-green: #2ecc71;
+            --money-green-dark: #27ae60;
+        }
+        body {
+            background-color: white;
+            color: #333;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #333, var(--money-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .card {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .card:hover {
+            border-color: var(--money-green);
+            transform: translateY(-5px);
+        }
+        .btn-primary {
+            background-color: var(--money-green);
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: var(--money-green-dark);
+        }
+        .dashboard-container {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .dashboard-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(46,204,113,0.15), rgba(255,255,255,0));
+            pointer-events: none;
+        }
+        .stat-card {
+            border-left: 4px solid var(--money-green);
+        }
+        /* Animation for live data */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes slide-in {
+            0% { transform: translateY(10px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .slide-in {
+            animation: slide-in 0.4s ease-out forwards;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 70%; }
+        }
+        .animate-progress {
+            animation: progress 1.5s ease-out forwards;
+        }
+        
+        @keyframes number-count {
+            0% { content: "$0"; }
+            20% { content: "$4,690"; }
+            40% { content: "$9,380"; }
+            60% { content: "$14,080"; }
+            80% { content: "$18,780"; }
+            100% { content: "$23,481"; }
+        }
+        .number-animation {
+            position: relative;
+        }
+        .number-animation::after {
+            content: "";
+            animation: number-change 1.5s forwards;
+        }
+        
+        /* Hover effects */
+        .interactive:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="bg-white shadow-sm py-4">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                Efficiencee<span class="text-[#2ecc71]">Technology</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="demo-dashboard.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Interactive Demo</a>
+                <a href="mobile-ordering.html" class="text-gray-600 hover:text-[#2ecc71] font-medium">Mobile Ordering</a>
+            </div>
+            <div>
+                <button class="btn-primary px-5 py-2 rounded-md font-medium">Contact Sales</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="py-20 px-4">
+            <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-12">
+                    <h1 class="text-5xl font-bold mb-6 gradient-text">
+                        Increase Venue Revenue & Improve Operations
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Efficiencee's all-in-one platform delivers 30% higher revenue while creating unforgettable fan experiences.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="download.html" class="btn-primary px-8 py-3 rounded-md font-semibold text-center">
+                            Download Demo
+                        </a>
+                        <a href="schedule-demo.html" class="px-8 py-3 rounded-md font-semibold text-center border border-gray-300 hover:border-[#2ecc71] transition-colors">
+                            Schedule a Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 dashboard-container">
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
+                        <!-- Dashboard Header -->
+                        <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-[#2ecc71] mr-2"></div>
+                                <span class="font-medium">Venue Dashboard</span>
+                            </div>
+                            <div class="text-sm flex items-center">
+                                <div class="mr-3 px-2 py-1 bg-[#2ecc71]/20 text-[#2ecc71] rounded-md flex items-center">
+                                    <div class="w-2 h-2 rounded-full bg-[#2ecc71] mr-1"></div>
+                                    Live
+                                </div>
+                                <span>Today, May 15 · Event: Championship Game</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Dashboard Content -->
+                        <div class="p-4">
+                            <!-- Key Metrics -->
+                            <div class="grid grid-cols-4 gap-4 mb-6">
+                                <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 stat-card interactive slide-in">
+                                    <div class="text-xs text-gray-500 uppercase font-medium">Total Sales</div>
+                                    <div class="flex items-end justify-between">
+                                        <div class="text-2xl font-bold count-up" data-target="23481">$0</div>
+                                        <div class="text-xs text-[#2ecc71] flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                            </svg>
+                                            32%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 stat-card interactive slide-in delay-1">
+                                    <div class="text-xs text-gray-500 uppercase font-medium">Orders</div>
+                                    <div class="flex items-end justify-between">
+                                        <div class="text-2xl font-bold count-up" data-target="1842">0</div>
+                                        <div class="text-xs text-[#2ecc71] flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                            </svg>
+                                            15%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 stat-card">
+                                    <div class="text-xs text-gray-500 uppercase font-medium">Inventory Level</div>
+                                    <div class="flex items-end justify-between">
+                                        <div class="text-2xl font-bold">84%</div>
+                                        <div class="text-xs text-yellow-500 flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            </svg>
+                                            Alert
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 stat-card">
+                                    <div class="text-xs text-gray-500 uppercase font-medium">Staff Efficiency</div>
+                                    <div class="flex items-end justify-between">
+                                        <div class="text-2xl font-bold">91%</div>
+                                        <div class="text-xs text-[#2ecc71] flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                            </svg>
+                                            8%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Ticket Sales & Merch Correlation -->
+                            <div class="mb-6 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="font-medium">Ticket Sales & Merchandise Correlation</h3>
+                                    <div class="text-xs text-[#2ecc71]">Last 30 Days</div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="text-sm text-gray-600 mb-2">Ticket Holders Who Purchased Merch</div>
+                                        <div class="flex items-center">
+                                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                                <div class="bg-[#2ecc71] h-2.5 rounded-full" style="width: 75%"></div>
+                                            </div>
+                                            <span class="ml-2 text-sm font-medium">75%</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm text-gray-600 mb-2">Average Merch Spend per Ticket</div>
+                                        <div class="flex items-center">
+                                            <div class="text-2xl font-bold">$42.50</div>
+                                            <div class="ml-2 text-xs text-[#2ecc71]">↑ 15%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Inventory Management -->
+                            <div class="mb-6 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="font-medium">Inventory Management</h3>
+                                    <div class="text-xs text-[#2ecc71]">Real-time Updates</div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div class="p-3 bg-gray-50 rounded-lg">
+                                        <div class="text-sm text-gray-600 mb-1">Current Stock</div>
+                                        <div class="text-xl font-bold">84%</div>
+                                        <div class="text-xs text-yellow-500">3 items low</div>
+                                    </div>
+                                    <div class="p-3 bg-gray-50 rounded-lg">
+                                        <div class="text-sm text-gray-600 mb-1">Auto-Orders</div>
+                                        <div class="text-xl font-bold">12</div>
+                                        <div class="text-xs text-[#2ecc71]">This week</div>
+                                    </div>
+                                    <div class="p-3 bg-gray-50 rounded-lg">
+                                        <div class="text-sm text-gray-600 mb-1">Waste Reduction</div>
+                                        <div class="text-xl font-bold">-15%</div>
+                                        <div class="text-xs text-[#2ecc71]">vs last month</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Popular Items -->
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div class="font-medium">Popular Items</div>
+                                    <div class="text-xs text-[#2ecc71]">View All</div>
+                                </div>
+                                <div class="overflow-hidden rounded-lg border border-gray-100">
+                                    <table class="w-full text-left text-sm">
+                                        <thead class="bg-gray-50 text-xs uppercase text-gray-700">
+                                            <tr>
+                                                <th class="px-3 py-2">Item</th>
+                                                <th class="px-3 py-2">Sales</th>
+                                                <th class="px-3 py-2">Revenue</th>
+                                                <th class="px-3 py-2">Stock</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-100">
+                                            <tr class="bg-white">
+                                                <td class="px-3 py-2 font-medium">Beer, Domestic</td>
+                                                <td class="px-3 py-2">458</td>
+                                                <td class="px-3 py-2">$4,580</td>
+                                                <td class="px-3 py-2"><span class="px-2 py-0.5 rounded-full bg-[#2ecc71]/10 text-[#2ecc71] text-xs">In Stock</span></td>
+                                            </tr>
+                                            <tr class="bg-white">
+                                                <td class="px-3 py-2 font-medium">Chicken Tenders</td>
+                                                <td class="px-3 py-2">387</td>
+                                                <td class="px-3 py-2">$3,870</td>
+                                                <td class="px-3 py-2"><span class="px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800 text-xs">Low</span></td>
+                                            </tr>
+                                            <tr class="bg-white">
+                                                <td class="px-3 py-2 font-medium">Hot Dogs</td>
+                                                <td class="px-3 py-2">324</td>
+                                                <td class="px-3 py-2">$3,240</td>
+                                                <td class="px-3 py-2"><span class="px-2 py-0.5 rounded-full bg-[#2ecc71]/10 text-[#2ecc71] text-xs">In Stock</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Activity Timeline -->
+                            <div class="text-xs">
+                                <div class="font-medium mb-2">Recent Activity</div>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <div class="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                                        <div class="text-gray-500">Just now - Inventory alert: Chicken Tenders running low</div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-2 h-2 rounded-full bg-[#2ecc71] mr-2"></div>
+                                        <div class="text-gray-500">2m ago - Mobile sales up 42% in Section 201-204</div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-2 h-2 rounded-full bg-purple-500 mr-2"></div>
+                                        <div class="text-gray-500">5m ago - Wait time at Concession Stand 3 exceeds 10 minutes</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="py-16 px-4 bg-gray-50">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold mb-12 text-center">
+                    How Efficiencee <span class="text-[#2ecc71]">Increases Revenue</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="card p-6 rounded-lg">
+                        <div class="text-[#2ecc71] text-4xl mb-4">+40%</div>
+                        <h3 class="text-xl font-semibold mb-3">Higher Order Value</h3>
+                        <p class="text-gray-600">Mobile ordering increases average transaction size and frequency.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg">
+                        <div class="text-[#2ecc71] text-4xl mb-4">-15%</div>
+                        <h3 class="text-xl font-semibold mb-3">Reduced Waste</h3>
+                        <p class="text-gray-600">Real-time inventory tracking minimizes spoilage and overstock.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg">
+                        <div class="text-[#2ecc71] text-4xl mb-4">+25%</div>
+                        <h3 class="text-xl font-semibold mb-3">Staff Efficiency</h3>
+                        <p class="text-gray-600">Streamlined operations allow staff to serve more customers faster.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fan Experience Section -->
+        <section class="py-16 px-4 bg-white">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold mb-2 text-center">
+                    Elevating the <span class="text-[#2ecc71]">Fan Experience</span>
+                </h2>
+                <p class="text-center text-gray-600 mb-12">When fans are happy, venues thrive</p>
+                
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="md:w-1/2">
+                        <div class="relative shadow-xl rounded-xl overflow-hidden border-4 border-gray-100 mx-auto max-w-xs">
+                            <!-- Mobile phone frame -->
+                            <div class="absolute top-0 left-0 right-0 h-6 bg-gray-800 z-10 flex items-center justify-center">
+                                <div class="w-16 h-1 bg-gray-600 rounded-full"></div>
+                            </div>
+                            <div class="relative pt-6 bg-gradient-to-b from-gray-800 to-gray-700 pb-2">
+                                <div class="text-white text-center text-lg font-semibold">Pittsburgh Pirates</div>
+                                <div class="text-white/70 text-center text-xs">Official Team App</div>
+                                <div class="flex justify-around p-2 text-white text-xs font-medium mt-1">
+                                    <div class="text-center">
+                                        <div class="p-2 bg-white/20 rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                            </svg>
+                                        </div>
+                                        <span>Tickets</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="p-2 bg-white/20 rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <span>Wait Times</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="p-2 bg-white/20 rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                            </svg>
+                                        </div>
+                                        <span>Order</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3">
+                                <div class="bg-gray-100 rounded-lg p-3 mb-3">
+                                    <div class="text-sm font-semibold mb-1">Mobile Ordering</div>
+                                    <div class="flex justify-between items-center">
+                                        <div class="text-xs text-gray-600">Hot Dog & Drink Combo</div>
+                                        <div class="text-xs font-medium text-[#2ecc71]">$12.99</div>
+                                    </div>
+                                    <div class="w-full bg-gray-200 h-1 rounded-full mt-2">
+                                        <div class="bg-[#2ecc71] h-1 rounded-full animate-progress" style="width: 0%"></div>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1">Order ready in 5 mins</div>
+                                </div>
+                                <div class="flex justify-between mb-3">
+                                    <div class="text-sm font-semibold">Find My Friends</div>
+                                    <div class="text-xs text-[#2ecc71] font-medium">3 nearby</div>
+                                </div>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs">JD</div>
+                                    <div class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs">MS</div>
+                                    <div class="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs">KT</div>
+                                    <div class="text-xs text-gray-600">Section 103, Row 12</div>
+                                </div>
+                                <div class="bg-gray-100 rounded-lg p-3">
+                                    <div class="text-sm font-semibold mb-1">Express Entry</div>
+                                    <div class="text-xs text-gray-600">Gate B - South Entrance</div>
+                                    <div class="text-xs text-[#2ecc71] font-medium mt-1">Skip the line - 0 min wait</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold mb-3 flex items-center">
+                                <span class="text-[#2ecc71] mr-2">✓</span> No Separate App Required
+                            </h3>
+                            <p class="text-gray-600">Our technology seamlessly integrates into existing team apps, eliminating the need for fans to download another app or for venues to manage additional IT infrastructure.</p>
+                        </div>
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold mb-3 flex items-center">
+                                <span class="text-[#2ecc71] mr-2">✓</span> Plug-and-Play Integration
+                            </h3>
+                            <p class="text-gray-600">Implementation is hassle-free with minimal technical overhead. Get up and running quickly with our simple integration process.</p>
+                        </div>
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold mb-3 flex items-center">
+                                <span class="text-[#2ecc71] mr-2">✓</span> Unified Fan Experience
+                            </h3>
+                            <p class="text-gray-600">Fans enjoy a cohesive experience with all features accessible through their favorite team's app, increasing engagement and satisfaction.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Venue Types Section -->
+        <section class="py-16 px-4 bg-gray-50">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold mb-2 text-center">
+                    Works with <span class="text-[#2ecc71]">All Venue Types</span>
+                </h2>
+                <p class="text-center text-gray-600 mb-12">Our flexible platform adapts to the unique needs of any venue</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Stadium Card -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-all hover:shadow-md">
+                        <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1566840767907-14fbf8f77f4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">Sports Stadiums</h3>
+                            <p class="text-gray-600 text-sm">Optimize concessions and enhance game day experiences for tens of thousands of fans.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Arena Card -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-all hover:shadow-md">
+                        <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1576434795764-7e27901b7af2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">Indoor Arenas</h3>
+                            <p class="text-gray-600 text-sm">Perfect for concerts, basketball games, and other indoor events with multiple service areas.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Theme Park Card -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-all hover:shadow-md">
+                        <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1536244636800-a3f74db0f3cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">Amusement Parks</h3>
+                            <p class="text-gray-600 text-sm">Reduce wait times and increase spending across food, merchandise, and attractions.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Theater Card -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden transition-all hover:shadow-md">
+                        <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1503095396549-807759245b35?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">Theaters</h3>
+                            <p class="text-gray-600 text-sm">Streamline intermission services and enhance the audience experience at performing arts venues.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-16 px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold mb-2 text-center">
+                    Key Features for <span class="text-[#2ecc71]">Venue Operators</span>
+                </h2>
+                <p class="text-center text-gray-600 mb-12">The tools you need to enhance fan experiences and drive more revenue</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="flex">
+                        <div class="mr-4 text-[#2ecc71]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Real-time Analytics</h3>
+                            <p class="text-gray-600">Monitor sales, traffic patterns, and staff performance in real-time to make data-driven decisions.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex">
+                        <div class="mr-4 text-[#2ecc71]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Mobile Ordering</h3>
+                            <p class="text-gray-600">Eliminate lines with in-seat mobile ordering, increasing order frequency and customer satisfaction.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex">
+                        <div class="mr-4 text-[#2ecc71]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Inventory Management</h3>
+                            <p class="text-gray-600">Track inventory in real-time, automate reordering, and minimize waste with smart predictions.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex">
+                        <div class="mr-4 text-[#2ecc71]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Ticketing & Event Creation</h3>
+                            <p class="text-gray-600">Seamlessly manage ticket sales, scan tickets, and create custom events all from one platform.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Subscription Tiers Section -->
+        <section class="py-16 px-4 bg-gray-50">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold mb-2 text-center">
+                    Simple <span class="text-[#2ecc71]">Pricing</span> Plans
+                </h2>
+                <p class="text-center text-gray-600 mb-12">Choose the plan that fits your venue's needs</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <!-- Basic Plan -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Basic</h3>
+                            <p class="text-gray-600 mb-4">Essential features for smaller venues</p>
+                            <div class="text-4xl font-bold mb-2">$350<span class="text-gray-400 text-lg font-normal">/month</span></div>
+                            <div class="text-sm text-gray-500 mb-6">+ 2% transaction fee</div>
+                            
+                            <ul class="space-y-3 mb-8">
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#2ecc71] mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Mobile Ordering Integration</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#2ecc71] mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Basic Analytics Dashboard</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#2ecc71] mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Seamless Team App Integration</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#2ecc71] mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Standard Support</span>
+                                </li>
+                                <li class="flex items-center text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Inventory Management</span>
+                                </li>
+                                <li class="flex items-center text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Heat Maps</span>
+                                </li>
+                            </ul>
+                            
+                            <div class="text-sm text-gray-600 mb-4">
+                                <span class="font-medium">Note:</span> 10% service fee applies to all transactions
+                            </div>
+                            
+                            <button class="w-full py-3 border border-[#2ecc71] text-[#2ecc71] rounded-md font-semibold hover:bg-[#2ecc71] hover:text-white transition-colors">
+                                Get Started
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Pro Plan (Highlighted) -->
+                    <div class="bg-white rounded-lg shadow-lg border-2 border-[#2ecc71] overflow-hidden relative">
+                        <div class="absolute top-0 right-0 bg-[#2ecc71] text-white px-4 py-1 text-sm font-bold">
+                            MOST POPULAR
+                        </div>
+                        <div class="p-6 pt-10">
+                            <h3 class="text-xl font-bold mb-2">Pro</h3>
+                            <p class="text-gray-600 mb-4">Complete solution for medium to large venues</p>
+                            <div class="text-4xl font-bold mb-2">$750<span class="text-gray-400 text-lg font-normal">/month</span></div>
+                            <div class="text-sm text-gray-500 mb-6">+ 1.5% transaction fee</div>
+                            
+                            <ul class="space-y-3 mb-8">
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#2ecc71] mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Advanced Mobile Ordering</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#2ecc71] mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Real-time Analytics Dashboard</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#2ecc71] mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Inventory Management</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#2ecc71] mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Heat Maps</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#2ecc71] mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Priority Support</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#2ecc71] mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Custom Branding</span>
+                                </li>
+                            </ul>
+                            
+                            <div class="text-sm text-gray-600 mb-4">
+                                <span class="font-medium">Note:</span> 10% service fee applies to all transactions
+                            </div>
+                            
+                            <button class="w-full py-3 bg-[#2ecc71] text-white rounded-md font-semibold hover:bg-[#27ae60] transition-colors">
+                                Get Started
+                            </button>
+                            
+                            <div class="mt-4 text-center text-sm text-[#2ecc71] font-medium">
+                                First 14 days with all advanced features
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="py-16 px-4 bg-gray-900 text-white">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-6">Ready to Enhance Your Venue?</h2>
+                <p class="text-xl mb-8">Transform your venue operations, boost revenue, and create unforgettable fan experiences in minutes.</p>
+                <a href="#" class="btn-primary px-8 py-4 rounded-md font-semibold inline-block">Download Demo Now</a>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section class="py-16 px-4 bg-gray-50">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-12">Download Efficiencee Technology</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-4">🪟</div>
+                        <h3 class="text-xl font-semibold mb-2">Windows</h3>
+                        <p class="text-gray-600 mb-4">Download for Windows 10/11</p>
+                        <a href="downloads/enhance-tech-windows.exe" class="btn-primary px-6 py-2 rounded-md font-medium inline-block">Download</a>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-4">🍎</div>
+                        <h3 class="text-xl font-semibold mb-2">macOS</h3>
+                        <p class="text-gray-600 mb-4">Download for macOS 10.15+</p>
+                        <a href="downloads/enhance-tech-mac.dmg" class="btn-primary px-6 py-2 rounded-md font-medium inline-block">Download</a>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-4">🐧</div>
+                        <h3 class="text-xl font-semibold mb-2">Linux</h3>
+                        <p class="text-gray-600 mb-4">Download for Ubuntu 20.04+</p>
+                        <a href="downloads/enhance-tech-linux.AppImage" class="btn-primary px-6 py-2 rounded-md font-medium inline-block">Download</a>
+                    </div>
+                </div>
+                <div class="mt-12 text-center">
+                    <p class="text-gray-600 mb-4">Need a trial license? Contact our sales team.</p>
+                    <a href="trial-request.html" class="btn-primary px-6 py-2 rounded-md font-medium inline-block">Request Trial</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-100 py-10">
+        <div class="max-w-6xl mx-auto px-4 text-center sm:text-left">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Efficiencee<span class="text-[#2ecc71]">Technology</span></h3>
+                    <p class="text-gray-600">Transforming venue operations and fan experiences.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Contact</h3>
+                    <p class="text-gray-600">sales@efficiencee.com</p>
+                    <p class="text-gray-600">1-800-EFFICIENCE</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Follow Us</h3>
+                    <div class="flex justify-center sm:justify-start space-x-4">
+                        <a href="#" class="text-gray-600 hover:text-[#2ecc71]">Twitter</a>
+                        <a href="#" class="text-gray-600 hover:text-[#2ecc71]">LinkedIn</a>
+                        <a href="#" class="text-gray-600 hover:text-[#2ecc71]">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 mt-8 pt-8 text-gray-600">
+                <p>© 2023 Efficiencee Technology. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animation for counting up numbers
+        document.addEventListener('DOMContentLoaded', () => {
+            const countElements = document.querySelectorAll('.count-up');
+            
+            countElements.forEach(el => {
+                const target = parseInt(el.getAttribute('data-target').replace(/,/g, ''));
+                const duration = 1500; // 1.5 seconds
+                const startTime = Date.now();
+                const prefix = el.innerText.startsWith('$') ? '$' : '';
+                
+                const updateCount = () => {
+                    const now = Date.now();
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    const value = Math.floor(progress * target);
+                    
+                    if (prefix === '$') {
+                        el.innerText = `${prefix}${value.toLocaleString()}`;
+                    } else {
+                        el.innerText = value.toLocaleString();
+                    }
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(updateCount);
+                    }
+                };
+                
+                updateCount();
+            });
+            
+            // Add pulse effect to live indicators
+            const liveElements = document.querySelectorAll('.bg-[#2ecc71]');
+            liveElements.forEach(el => {
+                if (el.classList.contains('rounded-full') && el.clientWidth < 10) {
+                    el.classList.add('pulse');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
